@@ -3,6 +3,7 @@
 import { useState, useCallback } from 'react'
 import type { Template, PostMode, CloserType } from '@/lib/db/types'
 import type { GuardrailResult } from '@/lib/voice/guardrail'
+import { SegmentedControl } from '@/components/SegmentedControl'
 
 interface Variation {
   content: string
@@ -199,38 +200,34 @@ export default function ComposerClient({ templates }: { templates: Template[] })
         <div className="grid grid-cols-3 gap-4">
           <div>
             <label className="block text-xs font-medium text-zinc-600 mb-1.5">Mode</label>
-            <select
+            <SegmentedControl<PostMode>
+              options={[
+                { value: 'engagement', label: 'Engagement' },
+                { value: 'authority', label: 'Authority' },
+              ]}
               value={mode}
-              onChange={(e) => setMode(e.target.value as PostMode)}
-              className="w-full text-sm border border-zinc-200 rounded p-2 focus:outline-none"
-            >
-              <option value="engagement">Engagement</option>
-              <option value="authority">Authority</option>
-            </select>
+              onChange={setMode}
+            />
           </div>
           <div>
             <label className="block text-xs font-medium text-zinc-600 mb-1.5">Closer</label>
-            <select
+            <SegmentedControl<CloserType>
+              options={[
+                { value: 'question', label: 'Question' },
+                { value: 'soft_cta', label: 'Soft CTA' },
+                { value: 'none', label: 'None' },
+              ]}
               value={ctaStyle}
-              onChange={(e) => setCtaStyle(e.target.value as CloserType)}
-              className="w-full text-sm border border-zinc-200 rounded p-2 focus:outline-none"
-            >
-              <option value="question">Question</option>
-              <option value="soft_cta">Soft CTA</option>
-              <option value="none">None</option>
-            </select>
+              onChange={setCtaStyle}
+            />
           </div>
           <div>
             <label className="block text-xs font-medium text-zinc-600 mb-1.5">Variations</label>
-            <select
-              value={variationCount}
-              onChange={(e) => setVariationCount(Number(e.target.value))}
-              className="w-full text-sm border border-zinc-200 rounded p-2 focus:outline-none"
-            >
-              {[1, 2, 3, 4, 5].map((n) => (
-                <option key={n} value={n}>{n}</option>
-              ))}
-            </select>
+            <SegmentedControl<string>
+              options={[1, 2, 3, 4, 5].map((n) => ({ value: String(n), label: String(n) }))}
+              value={String(variationCount)}
+              onChange={(v) => setVariationCount(Number(v))}
+            />
           </div>
         </div>
 

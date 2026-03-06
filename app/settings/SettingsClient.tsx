@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { SegmentedControl } from '@/components/SegmentedControl'
 
 interface SettingsData {
   llm_provider: string
@@ -80,20 +81,20 @@ export default function SettingsClient({ initial }: { initial: Record<string, st
       {/* LLM */}
       <section className="bg-white border border-zinc-200 rounded-lg p-6 space-y-4">
         <h2 className="text-sm font-semibold text-zinc-700">LLM Provider</h2>
-        <div className="grid grid-cols-2 gap-4">
+        <div className="space-y-3">
           <div>
-            <label className="block text-xs text-zinc-500 mb-1">Provider</label>
-            <select
+            <label className="block text-xs text-zinc-500 mb-1.5">Provider</label>
+            <SegmentedControl<string>
+              options={[
+                { value: 'openai', label: 'OpenAI' },
+                { value: 'anthropic', label: 'Anthropic' },
+              ]}
               value={settings.llm_provider}
-              onChange={(e) => {
-                update('llm_provider', e.target.value)
-                update('llm_model', models[e.target.value][0])
+              onChange={(v) => {
+                update('llm_provider', v)
+                update('llm_model', models[v][0])
               }}
-              className="w-full text-sm border border-zinc-200 rounded p-2"
-            >
-              <option value="openai">OpenAI</option>
-              <option value="anthropic">Anthropic</option>
-            </select>
+            />
           </div>
           <div>
             <label className="block text-xs text-zinc-500 mb-1">Model</label>

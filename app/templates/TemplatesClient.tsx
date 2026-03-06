@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import type { Template, ModeAffinity, HookType, CloserType } from '@/lib/db/types'
+import { SegmentedControl } from '@/components/SegmentedControl'
 
 function ModeAffinityBadge({ mode }: { mode: string | null }) {
   const map: Record<string, string> = {
@@ -245,21 +246,15 @@ export default function TemplatesClient({ initialTemplates }: { initialTemplates
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <div className="flex gap-1">
-          {(['all', 'engagement', 'authority'] as const).map((f) => (
-            <button
-              key={f}
-              onClick={() => setFilter(f)}
-              className={`px-3 py-1.5 text-xs rounded capitalize border transition-colors ${
-                filter === f
-                  ? 'bg-zinc-900 text-white border-zinc-900'
-                  : 'border-zinc-200 text-zinc-600 hover:border-zinc-400'
-              }`}
-            >
-              {f}
-            </button>
-          ))}
-        </div>
+        <SegmentedControl<'all' | 'engagement' | 'authority'>
+          options={[
+            { value: 'all', label: 'All' },
+            { value: 'engagement', label: 'Engagement' },
+            { value: 'authority', label: 'Authority' },
+          ]}
+          value={filter}
+          onChange={setFilter}
+        />
         <button
           onClick={() => setShowNew(!showNew)}
           className="px-3 py-1.5 text-xs bg-zinc-900 text-white rounded hover:bg-zinc-700"
