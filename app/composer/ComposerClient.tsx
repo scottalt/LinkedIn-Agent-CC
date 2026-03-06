@@ -94,6 +94,15 @@ function VariationCard({
   )
 }
 
+const EMOJI_NUMS: Record<string, string> = {
+  '1': '1️⃣', '2': '2️⃣', '3': '3️⃣', '4': '4️⃣', '5': '5️⃣',
+  '6': '6️⃣', '7': '7️⃣', '8': '8️⃣', '9': '9️⃣', '10': '🔟',
+}
+
+function applyEmojiNumbers(text: string): string {
+  return text.replace(/^(\d+)\. /gm, (_, n) => `${EMOJI_NUMS[n] ?? `${n}.`} `)
+}
+
 export default function ComposerClient({ templates }: { templates: Template[] }) {
   const [topic, setTopic] = useState('')
   const [mode, setMode] = useState<PostMode>('engagement')
@@ -101,11 +110,14 @@ export default function ComposerClient({ templates }: { templates: Template[] })
   const [templateId, setTemplateId] = useState('')
   const [firstComment, setFirstComment] = useState('')
   const [variationCount, setVariationCount] = useState(3)
+  const [emojiNumbers, setEmojiNumbers] = useState(false)
   const [generating, setGenerating] = useState(false)
   const [tighteningIndex, setTighteningIndex] = useState<number | null>(null)
   const [variations, setVariations] = useState<Variation[]>([])
   const [error, setError] = useState('')
   const [savedId, setSavedId] = useState('')
+
+  const postProcess = (content: string) => emojiNumbers ? applyEmojiNumbers(content) : content
 
   const handleGenerate = async () => {
     if (!topic.trim()) return
@@ -122,7 +134,7 @@ export default function ComposerClient({ templates }: { templates: Template[] })
       })
       const data = await res.json()
       if (!res.ok) throw new Error(data.error)
-      setVariations(data.variations)
+      setVariations(data.variations.map((v: Variation) => ({ ...v, content: postProcess(v.content) })))
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Generation failed')
     } finally {
@@ -141,7 +153,7 @@ export default function ComposerClient({ templates }: { templates: Template[] })
       const data = await res.json()
       if (!res.ok) throw new Error(data.error)
       setVariations((prev) =>
-        prev.map((v, i) => (i === index ? { content: data.tightened, guardrail: data.guardrail } : v))
+        prev.map((v, i) => (i === index ? { content: postProcess(data.tightened), guardrail: data.guardrail } : v))
       )
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Tighten failed')
@@ -258,11 +270,21 @@ export default function ComposerClient({ templates }: { templates: Template[] })
         </div>
 
         <div className="flex items-center justify-between pt-1">
-          {error && <p className="text-sm text-red-600">{error}</p>}
-          {savedId && (
-            <p className="text-sm text-emerald-600">Saved as draft. <a href="/dashboard" className="underline">View dashboard</a></p>
-          )}
-          {!error && !savedId && <span />}
+          <div className="flex items-center gap-4">
+            <label className="flex items-center gap-2 cursor-pointer select-none">
+              <input
+                type="checkbox"
+                checked={emojiNumbers}
+                onChange={(e) => setEmojiNumbers(e.target.checked)}
+                className="rounded border-zinc-300"
+              />
+              <span className="text-xs text-zinc-600">Emoji numbers <span className="text-zinc-400">(1️⃣ 2️⃣ 3️⃣)</span></span>
+            </label>
+            {error && <p className="text-sm text-red-600">{error}</p>}
+            {savedId && (
+              <p className="text-sm text-emerald-600">Saved. <a href="/dashboard" className="underline">View dashboard</a></p>
+            )}
+          </div>
           <button
             onClick={handleGenerate}
             disabled={generating || !topic.trim()}
