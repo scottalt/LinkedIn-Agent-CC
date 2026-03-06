@@ -53,7 +53,7 @@ function TagList({
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && handleAdd()}
           placeholder={placeholder}
-          className="flex-1 text-sm border border-zinc-200 rounded p-2"
+          className="flex-1 text-sm border border-zinc-300 rounded p-2 text-zinc-900"
         />
         <button
           onClick={handleAdd}
@@ -258,18 +258,18 @@ export default function StyleCenterClient({ stylePack }: StyleCenterClientProps)
         <h2 className="text-sm font-semibold text-zinc-700">Hashtag Rules</h2>
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-xs text-zinc-500 mb-1">Max hashtags</label>
+            <label className="block text-xs font-medium text-zinc-700 mb-1">Max hashtags</label>
             <input
               type="number"
               min={0}
               max={10}
               value={hashtagRules.max}
               onChange={(e) => setHashtagRules((prev) => ({ ...prev, max: Number(e.target.value) }))}
-              className="w-full text-sm border border-zinc-200 rounded p-2"
+              className="w-full text-sm border border-zinc-300 rounded p-2 text-zinc-900"
             />
           </div>
           <div>
-            <label className="block text-xs text-zinc-500 mb-1">Preferred tags</label>
+            <label className="block text-xs font-medium text-zinc-700 mb-1">Preferred tags</label>
             <TagList
               items={hashtagRules.preferred_tags}
               onRemove={(i) =>

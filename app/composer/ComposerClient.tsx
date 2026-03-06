@@ -187,7 +187,7 @@ export default function ComposerClient({ templates }: { templates: Template[] })
       {/* Controls */}
       <div className="bg-white border border-zinc-200 rounded-lg p-6 space-y-4">
         <div>
-          <label className="block text-xs font-medium text-zinc-600 mb-1.5">Topic / Prompt</label>
+          <label className="block text-xs font-medium text-zinc-800 mb-1.5">Topic / Prompt</label>
           <textarea
             value={topic}
             onChange={(e) => setTopic(e.target.value)}
@@ -199,7 +199,7 @@ export default function ComposerClient({ templates }: { templates: Template[] })
 
         <div className="grid grid-cols-3 gap-4">
           <div>
-            <label className="block text-xs font-medium text-zinc-600 mb-1.5">Mode</label>
+            <label className="block text-xs font-medium text-zinc-800 mb-1.5">Mode</label>
             <SegmentedControl<PostMode>
               options={[
                 { value: 'engagement', label: 'Engagement' },
@@ -210,7 +210,7 @@ export default function ComposerClient({ templates }: { templates: Template[] })
             />
           </div>
           <div>
-            <label className="block text-xs font-medium text-zinc-600 mb-1.5">Closer</label>
+            <label className="block text-xs font-medium text-zinc-800 mb-1.5">Closer</label>
             <SegmentedControl<CloserType>
               options={[
                 { value: 'question', label: 'Question' },
@@ -222,7 +222,7 @@ export default function ComposerClient({ templates }: { templates: Template[] })
             />
           </div>
           <div>
-            <label className="block text-xs font-medium text-zinc-600 mb-1.5">Variations</label>
+            <label className="block text-xs font-medium text-zinc-800 mb-1.5">Variations</label>
             <SegmentedControl<string>
               options={[1, 2, 3, 4, 5].map((n) => ({ value: String(n), label: String(n) }))}
               value={String(variationCount)}
@@ -233,7 +233,7 @@ export default function ComposerClient({ templates }: { templates: Template[] })
 
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-xs font-medium text-zinc-600 mb-1.5">Template (optional)</label>
+            <label className="block text-xs font-medium text-zinc-800 mb-1.5">Template (optional)</label>
             <select
               value={templateId}
               onChange={(e) => setTemplateId(e.target.value)}
@@ -246,7 +246,7 @@ export default function ComposerClient({ templates }: { templates: Template[] })
             </select>
           </div>
           <div>
-            <label className="block text-xs font-medium text-zinc-600 mb-1.5">First comment (optional)</label>
+            <label className="block text-xs font-medium text-zinc-800 mb-1.5">First comment (optional)</label>
             <input
               type="text"
               value={firstComment}

@@ -20,7 +20,7 @@ export function SegmentedControl<T extends string>({
   const padding = size === 'sm' ? 'px-2.5 py-1' : 'px-3 py-1.5'
 
   return (
-    <div className="flex bg-zinc-100 rounded-lg p-0.5 gap-0.5">
+    <div className="flex bg-zinc-200 rounded-lg p-0.5 gap-0.5">
       {options.map((opt) => (
         <button
           key={opt.value}

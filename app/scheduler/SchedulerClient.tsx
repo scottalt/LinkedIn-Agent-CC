@@ -78,12 +78,12 @@ function ScheduleModal({
         <h3 className="text-sm font-semibold text-zinc-800">Schedule Post</h3>
         <p className="text-xs text-zinc-500 line-clamp-3">{post.content}</p>
         <div>
-          <label className="block text-xs text-zinc-500 mb-1">Date and time</label>
+          <label className="block text-xs font-medium text-zinc-700 mb-1">Date and time</label>
           <input
             type="datetime-local"
             value={dt}
             onChange={(e) => setDt(e.target.value)}
-            className="w-full text-sm border border-zinc-200 rounded p-2"
+            className="w-full text-sm border border-zinc-300 rounded p-2 text-zinc-900"
           />
         </div>
         <p className="text-xs text-zinc-400">

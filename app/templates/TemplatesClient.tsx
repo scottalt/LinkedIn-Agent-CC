@@ -122,21 +122,21 @@ function NewTemplateForm({ onCreated }: { onCreated: (t: Template) => void }) {
 
       <div className="grid grid-cols-2 gap-4">
         <div>
-          <label className="block text-xs text-zinc-500 mb-1">Name</label>
+          <label className="block text-xs font-medium text-zinc-700 mb-1">Name</label>
           <input
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="w-full text-sm border border-zinc-200 rounded p-2"
+            className="w-full text-sm border border-zinc-300 rounded p-2 text-zinc-900"
             placeholder="e.g. Lesson Learned"
           />
         </div>
         <div>
-          <label className="block text-xs text-zinc-500 mb-1">Mode</label>
+          <label className="block text-xs font-medium text-zinc-700 mb-1">Mode</label>
           <select
             value={modeAffinity}
             onChange={(e) => setModeAffinity(e.target.value as ModeAffinity)}
-            className="w-full text-sm border border-zinc-200 rounded p-2"
+            className="w-full text-sm border border-zinc-300 rounded p-2 text-zinc-900"
           >
             <option value="engagement">Engagement</option>
             <option value="authority">Authority</option>
@@ -144,11 +144,11 @@ function NewTemplateForm({ onCreated }: { onCreated: (t: Template) => void }) {
           </select>
         </div>
         <div>
-          <label className="block text-xs text-zinc-500 mb-1">Hook Type</label>
+          <label className="block text-xs font-medium text-zinc-700 mb-1">Hook Type</label>
           <select
             value={hookType}
             onChange={(e) => setHookType(e.target.value as HookType | '')}
-            className="w-full text-sm border border-zinc-200 rounded p-2"
+            className="w-full text-sm border border-zinc-300 rounded p-2 text-zinc-900"
           >
             <option value="">None</option>
             <option value="question">Question</option>
@@ -159,11 +159,11 @@ function NewTemplateForm({ onCreated }: { onCreated: (t: Template) => void }) {
           </select>
         </div>
         <div>
-          <label className="block text-xs text-zinc-500 mb-1">Closer Type</label>
+          <label className="block text-xs font-medium text-zinc-700 mb-1">Closer Type</label>
           <select
             value={closerType}
             onChange={(e) => setCloserType(e.target.value as CloserType)}
-            className="w-full text-sm border border-zinc-200 rounded p-2"
+            className="w-full text-sm border border-zinc-300 rounded p-2 text-zinc-900"
           >
             <option value="none">None</option>
             <option value="question">Question</option>
@@ -192,7 +192,7 @@ function NewTemplateForm({ onCreated }: { onCreated: (t: Template) => void }) {
                 value={block.label}
                 onChange={(e) => updateBlock(i, 'label', e.target.value)}
                 placeholder="Label"
-                className="flex-1 text-sm border border-zinc-200 rounded p-1.5"
+                className="flex-1 text-sm border border-zinc-300 rounded p-1.5 text-zinc-900"
               />
               <button onClick={() => removeBlock(i)} className="text-xs text-red-400 hover:text-red-600 px-1">
                 x

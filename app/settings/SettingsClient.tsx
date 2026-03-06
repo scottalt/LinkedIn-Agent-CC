@@ -83,7 +83,7 @@ export default function SettingsClient({ initial }: { initial: Record<string, st
         <h2 className="text-sm font-semibold text-zinc-700">LLM Provider</h2>
         <div className="space-y-3">
           <div>
-            <label className="block text-xs text-zinc-500 mb-1.5">Provider</label>
+            <label className="block text-xs font-medium text-zinc-700 mb-1.5">Provider</label>
             <SegmentedControl<string>
               options={[
                 { value: 'openai', label: 'OpenAI' },
@@ -97,11 +97,11 @@ export default function SettingsClient({ initial }: { initial: Record<string, st
             />
           </div>
           <div>
-            <label className="block text-xs text-zinc-500 mb-1">Model</label>
+            <label className="block text-xs font-medium text-zinc-700 mb-1">Model</label>
             <select
               value={settings.llm_model}
               onChange={(e) => update('llm_model', e.target.value)}
-              className="w-full text-sm border border-zinc-200 rounded p-2"
+              className="w-full text-sm border border-zinc-300 rounded p-2 text-zinc-900"
             >
               {(models[settings.llm_provider] ?? []).map((m) => (
                 <option key={m} value={m}>{m}</option>
@@ -111,23 +111,23 @@ export default function SettingsClient({ initial }: { initial: Record<string, st
         </div>
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-xs text-zinc-500 mb-1">OpenAI API Key</label>
+            <label className="block text-xs font-medium text-zinc-700 mb-1">OpenAI API Key</label>
             <input
               type="password"
               value={settings.openai_api_key}
               onChange={(e) => update('openai_api_key', e.target.value)}
               placeholder={initial.openai_api_key === '***' ? 'Set (hidden)' : 'sk-...'}
-              className="w-full text-sm border border-zinc-200 rounded p-2"
+              className="w-full text-sm border border-zinc-300 rounded p-2 text-zinc-900"
             />
           </div>
           <div>
-            <label className="block text-xs text-zinc-500 mb-1">Anthropic API Key</label>
+            <label className="block text-xs font-medium text-zinc-700 mb-1">Anthropic API Key</label>
             <input
               type="password"
               value={settings.anthropic_api_key}
               onChange={(e) => update('anthropic_api_key', e.target.value)}
               placeholder={initial.anthropic_api_key === '***' ? 'Set (hidden)' : 'sk-ant-...'}
-              className="w-full text-sm border border-zinc-200 rounded p-2"
+              className="w-full text-sm border border-zinc-300 rounded p-2 text-zinc-900"
             />
           </div>
         </div>
@@ -144,14 +144,14 @@ export default function SettingsClient({ initial }: { initial: Record<string, st
         <div className="grid grid-cols-4 gap-4">
           {(['saves', 'comments', 'reposts', 'likes'] as const).map((key) => (
             <div key={key}>
-              <label className="block text-xs text-zinc-500 mb-1 capitalize">{key}</label>
+              <label className="block text-xs font-medium text-zinc-700 mb-1 capitalize">{key}</label>
               <input
                 type="number"
                 min={0}
                 max={10}
                 value={engWeights[key] ?? 1}
                 onChange={(e) => updateWeight(key, Number(e.target.value))}
-                className="w-full text-sm border border-zinc-200 rounded p-2"
+                className="w-full text-sm border border-zinc-300 rounded p-2 text-zinc-900"
               />
             </div>
           ))}
@@ -164,24 +164,24 @@ export default function SettingsClient({ initial }: { initial: Record<string, st
         <p className="text-xs text-zinc-400">Target ratio of engagement to authority posts per week.</p>
         <div className="flex items-center gap-3">
           <div>
-            <label className="block text-xs text-zinc-500 mb-1">Engagement</label>
+            <label className="block text-xs font-medium text-zinc-700 mb-1">Engagement</label>
             <input
               type="number"
               min={1}
               value={settings.mix_target_engagement}
               onChange={(e) => update('mix_target_engagement', e.target.value)}
-              className="w-20 text-sm border border-zinc-200 rounded p-2"
+              className="w-20 text-sm border border-zinc-300 rounded p-2 text-zinc-900"
             />
           </div>
           <span className="text-zinc-400 mt-4">:</span>
           <div>
-            <label className="block text-xs text-zinc-500 mb-1">Authority</label>
+            <label className="block text-xs font-medium text-zinc-700 mb-1">Authority</label>
             <input
               type="number"
               min={1}
               value={settings.mix_target_authority}
               onChange={(e) => update('mix_target_authority', e.target.value)}
-              className="w-20 text-sm border border-zinc-200 rounded p-2"
+              className="w-20 text-sm border border-zinc-300 rounded p-2 text-zinc-900"
             />
           </div>
         </div>
