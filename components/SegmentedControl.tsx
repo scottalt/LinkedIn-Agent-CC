@@ -28,8 +28,8 @@ export function SegmentedControl<T extends string>({
           onClick={() => onChange(opt.value)}
           className={`flex-1 ${padding} ${textSize} font-medium rounded-md transition-all duration-150 ${
             value === opt.value
-              ? 'bg-white text-zinc-900 shadow-sm ring-1 ring-zinc-200/60'
-              : 'text-zinc-500 hover:text-zinc-700'
+              ? 'bg-zinc-900 text-white shadow-sm'
+              : 'text-zinc-500 hover:text-zinc-800'
           }`}
         >
           {opt.label}
