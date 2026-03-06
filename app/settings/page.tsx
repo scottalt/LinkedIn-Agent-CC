@@ -10,7 +10,7 @@ export default function SettingsPage() {
 
   return (
     <div className="p-8 max-w-2xl mx-auto">
-      <h1 className="text-xl font-semibold text-zinc-900 mb-6">Settings</h1>
+      <h1 className="text-xl font-semibold text-ink mb-6">Settings</h1>
       <SettingsClient initial={safe} />
     </div>
   )

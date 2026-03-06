@@ -1,10 +1,24 @@
 @import "tailwindcss";
 
 @theme inline {
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-outfit);
+  --font-mono: var(--font-jetbrains);
+  --font-display: var(--font-dm-serif);
+
+  --color-surface: #0c0c0c;
+  --color-layer: #161616;
+  --color-well: #1e1e1e;
+  --color-rim: #252525;
+  --color-groove: #363636;
+  --color-ink: #e8e0d0;
+  --color-ink-2: #a89e8e;
+  --color-ink-3: #6e6458;
+  --color-gold: #e8a020;
+  --color-gold-dim: #b87a10;
 }
 
 body {
-  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  background: #0c0c0c;
+  color: #e8e0d0;
+  font-family: var(--font-outfit), system-ui, sans-serif;
 }

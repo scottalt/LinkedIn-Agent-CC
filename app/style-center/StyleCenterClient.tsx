@@ -34,12 +34,12 @@ function TagList({
         {items.map((item, i) => (
           <span
             key={i}
-            className="flex items-center gap-1 bg-zinc-100 text-zinc-700 text-xs px-2 py-1 rounded"
+            className="flex items-center gap-1 bg-well text-ink-2 text-xs px-2 py-1 rounded border border-rim"
           >
             {item}
             <button
               onClick={() => onRemove(i)}
-              className="text-zinc-400 hover:text-zinc-700 ml-0.5"
+              className="text-ink-3 hover:text-red-400 ml-0.5 transition-colors"
             >
               x
             </button>
@@ -53,11 +53,11 @@ function TagList({
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && handleAdd()}
           placeholder={placeholder}
-          className="flex-1 text-sm border border-zinc-300 rounded p-2 text-zinc-900"
+          className="flex-1 text-sm bg-well border border-groove rounded p-2 text-ink focus:outline-none focus:border-gold placeholder:text-ink-3"
         />
         <button
           onClick={handleAdd}
-          className="px-3 py-1.5 text-xs bg-zinc-800 text-white rounded hover:bg-zinc-700"
+          className="px-3 py-1.5 text-xs bg-well border border-groove text-ink-2 hover:text-ink hover:border-gold rounded transition-colors"
         >
           Add
         </button>
@@ -120,10 +120,10 @@ function IngestPanel() {
   }
 
   return (
-    <div className="bg-white border border-zinc-200 rounded-lg p-6 space-y-4">
+    <div className="bg-layer border border-rim rounded-lg p-6 space-y-4">
       <div>
-        <h2 className="text-sm font-semibold text-zinc-700 mb-1">Ingest Posts</h2>
-        <p className="text-xs text-zinc-400">
+        <h2 className="text-xs font-medium text-ink-2 uppercase tracking-wider mb-1">Ingest Posts</h2>
+        <p className="text-xs text-ink-3 mt-1">
           Paste 5-20 of your existing LinkedIn posts (separated by ---). The AI will extract
           your voice patterns, suggest templates, and update your style pack.
         </p>
@@ -133,54 +133,54 @@ function IngestPanel() {
         onChange={(e) => setRawInput(e.target.value)}
         rows={10}
         placeholder={`Post 1 text here...\n---\nPost 2 text here...\n---\nPost 3 text here...`}
-        className="w-full text-sm border border-zinc-200 rounded p-3 font-mono resize-y"
+        className="w-full text-sm bg-well border border-groove rounded p-3 font-mono text-ink resize-y focus:outline-none focus:border-gold placeholder:text-ink-3"
       />
-      {error && <p className="text-sm text-red-600">{error}</p>}
+      {error && <p className="text-sm text-red-400">{error}</p>}
       <div className="flex items-center justify-between">
-        <span className="text-xs text-zinc-400">
+        <span className="text-xs text-ink-3">
           Separate posts with --- on its own line
         </span>
         <button
           onClick={handleAnalyze}
           disabled={analyzing || !rawInput.trim()}
-          className="px-4 py-2 bg-zinc-900 text-white text-sm rounded hover:bg-zinc-700 disabled:opacity-50"
+          className="px-4 py-2 bg-gold text-[#0c0c0c] text-sm font-medium rounded hover:bg-gold-dim disabled:opacity-50 transition-colors"
         >
           {analyzing ? 'Analyzing...' : 'Analyze'}
         </button>
       </div>
 
       {patterns && !committed && (
-        <div className="border-t border-zinc-100 pt-4 space-y-3">
-          <h3 className="text-sm font-semibold text-zinc-700">Analysis Results</h3>
+        <div className="border-t border-rim pt-4 space-y-3">
+          <h3 className="text-xs font-medium text-ink-2 uppercase tracking-wider">Analysis Results</h3>
           {(patterns.hook_types as string[])?.length > 0 && (
             <div>
-              <p className="text-xs text-zinc-500 mb-1">Hook types detected:</p>
+              <p className="text-xs text-ink-3 mb-1">Hook types detected:</p>
               <div className="flex flex-wrap gap-1">
                 {(patterns.hook_types as string[]).map((t: string) => (
-                  <span key={t} className="bg-zinc-100 text-zinc-600 text-xs px-2 py-0.5 rounded">{t}</span>
+                  <span key={t} className="bg-well text-ink-2 text-xs px-2 py-0.5 rounded border border-rim">{t}</span>
                 ))}
               </div>
             </div>
           )}
           {(patterns.banned_phrase_candidates as string[])?.length > 0 && (
             <div>
-              <p className="text-xs text-zinc-500 mb-1">Phrases to avoid (will be added to banned list):</p>
+              <p className="text-xs text-ink-3 mb-1">Phrases to avoid (will be added to banned list):</p>
               <div className="flex flex-wrap gap-1">
                 {(patterns.banned_phrase_candidates as string[]).map((p: string) => (
-                  <span key={p} className="bg-amber-50 text-amber-700 text-xs px-2 py-0.5 rounded">{p}</span>
+                  <span key={p} className="bg-gold/10 text-gold text-xs px-2 py-0.5 rounded">{p}</span>
                 ))}
               </div>
             </div>
           )}
           {(patterns.suggested_templates as unknown[])?.length > 0 && (
             <div>
-              <p className="text-xs text-zinc-500 mb-1">Templates to create:</p>
+              <p className="text-xs text-ink-3 mb-1">Templates to create:</p>
               <div className="space-y-1">
                 {(patterns.suggested_templates as { name: string; mode_affinity: string }[]).map(
                   (t: { name: string; mode_affinity: string }, i: number) => (
-                    <div key={i} className="text-xs bg-zinc-50 rounded px-3 py-2 flex justify-between">
-                      <span className="text-zinc-700">{t.name}</span>
-                      <span className="text-zinc-400">{t.mode_affinity}</span>
+                    <div key={i} className="text-xs bg-well rounded px-3 py-2 flex justify-between border border-rim">
+                      <span className="text-ink-2">{t.name}</span>
+                      <span className="text-ink-3">{t.mode_affinity}</span>
                     </div>
                   )
                 )}
@@ -191,7 +191,7 @@ function IngestPanel() {
             <button
               onClick={handleCommit}
               disabled={committing}
-              className="px-4 py-2 bg-zinc-900 text-white text-sm rounded hover:bg-zinc-700 disabled:opacity-50"
+              className="px-4 py-2 bg-gold text-[#0c0c0c] text-sm font-medium rounded hover:bg-gold-dim disabled:opacity-50 transition-colors"
             >
               {committing ? 'Applying...' : 'Apply to Style Pack'}
             </button>
@@ -200,8 +200,8 @@ function IngestPanel() {
       )}
 
       {committed && (
-        <div className="border-t border-zinc-100 pt-4">
-          <p className="text-sm text-emerald-600">Style pack updated. Templates created.</p>
+        <div className="border-t border-rim pt-4">
+          <p className="text-sm text-emerald-400">Style pack updated. Templates created.</p>
         </div>
       )}
     </div>
@@ -240,10 +240,10 @@ export default function StyleCenterClient({ stylePack }: StyleCenterClientProps)
   return (
     <div className="space-y-6">
       {/* Banned Phrases */}
-      <div className="bg-white border border-zinc-200 rounded-lg p-6 space-y-3">
+      <div className="bg-layer border border-rim rounded-lg p-6 space-y-3">
         <div>
-          <h2 className="text-sm font-semibold text-zinc-700">Banned Phrases</h2>
-          <p className="text-xs text-zinc-400 mt-0.5">Guardrail checks will flag these in generated posts.</p>
+          <h2 className="text-xs font-medium text-ink-2 uppercase tracking-wider">Banned Phrases</h2>
+          <p className="text-xs text-ink-3 mt-0.5">Guardrail checks will flag these in generated posts.</p>
         </div>
         <TagList
           items={bannedPhrases}
@@ -254,22 +254,22 @@ export default function StyleCenterClient({ stylePack }: StyleCenterClientProps)
       </div>
 
       {/* Hashtag Rules */}
-      <div className="bg-white border border-zinc-200 rounded-lg p-6 space-y-3">
-        <h2 className="text-sm font-semibold text-zinc-700">Hashtag Rules</h2>
+      <div className="bg-layer border border-rim rounded-lg p-6 space-y-3">
+        <h2 className="text-xs font-medium text-ink-2 uppercase tracking-wider">Hashtag Rules</h2>
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-xs font-medium text-zinc-700 mb-1">Max hashtags</label>
+            <label className="block text-xs font-medium text-ink-2 mb-1">Max hashtags</label>
             <input
               type="number"
               min={0}
               max={10}
               value={hashtagRules.max}
               onChange={(e) => setHashtagRules((prev) => ({ ...prev, max: Number(e.target.value) }))}
-              className="w-full text-sm border border-zinc-300 rounded p-2 text-zinc-900"
+              className="w-full text-sm bg-well border border-groove rounded p-2 text-ink focus:outline-none focus:border-gold"
             />
           </div>
           <div>
-            <label className="block text-xs font-medium text-zinc-700 mb-1">Preferred tags</label>
+            <label className="block text-xs font-medium text-ink-2 mb-1">Preferred tags</label>
             <TagList
               items={hashtagRules.preferred_tags}
               onRemove={(i) =>
@@ -288,10 +288,10 @@ export default function StyleCenterClient({ stylePack }: StyleCenterClientProps)
       </div>
 
       {/* Voice Examples */}
-      <div className="bg-white border border-zinc-200 rounded-lg p-6 space-y-3">
+      <div className="bg-layer border border-rim rounded-lg p-6 space-y-3">
         <div>
-          <h2 className="text-sm font-semibold text-zinc-700">Voice Examples</h2>
-          <p className="text-xs text-zinc-400 mt-0.5">
+          <h2 className="text-xs font-medium text-ink-2 uppercase tracking-wider">Voice Examples</h2>
+          <p className="text-xs text-ink-3 mt-0.5">
             Real posts that exemplify your voice. Used to calibrate the system prompt.
           </p>
         </div>
@@ -304,11 +304,11 @@ export default function StyleCenterClient({ stylePack }: StyleCenterClientProps)
                   setVoiceExamples((prev) => prev.map((v, idx) => (idx === i ? e.target.value : v)))
                 }
                 rows={4}
-                className="flex-1 text-sm border border-zinc-200 rounded p-2 resize-y font-mono"
+                className="flex-1 text-sm bg-well border border-groove rounded p-2 resize-y font-mono text-ink focus:outline-none focus:border-gold"
               />
               <button
                 onClick={() => setVoiceExamples((prev) => prev.filter((_, idx) => idx !== i))}
-                className="text-xs text-red-400 hover:text-red-600 self-start mt-1"
+                className="text-xs text-ink-3 hover:text-red-400 self-start mt-1 transition-colors"
               >
                 Remove
               </button>
@@ -321,7 +321,7 @@ export default function StyleCenterClient({ stylePack }: StyleCenterClientProps)
             onChange={(e) => setNewExample(e.target.value)}
             rows={4}
             placeholder="Paste a post that sounds like you..."
-            className="w-full text-sm border border-zinc-200 rounded p-2 font-mono"
+            className="w-full text-sm bg-well border border-groove rounded p-2 font-mono text-ink focus:outline-none focus:border-gold placeholder:text-ink-3"
           />
           <button
             onClick={() => {
@@ -330,7 +330,7 @@ export default function StyleCenterClient({ stylePack }: StyleCenterClientProps)
                 setNewExample('')
               }
             }}
-            className="text-xs border border-zinc-200 rounded px-3 py-1.5 text-zinc-600 hover:border-zinc-400"
+            className="text-xs border border-rim hover:border-groove rounded px-3 py-1.5 text-ink-3 hover:text-ink-2 transition-colors"
           >
             + Add example
           </button>
@@ -338,12 +338,12 @@ export default function StyleCenterClient({ stylePack }: StyleCenterClientProps)
       </div>
 
       <div className="flex items-center justify-between">
-        {saved && <p className="text-sm text-emerald-600">Saved.</p>}
+        {saved && <p className="text-sm text-emerald-400">Saved.</p>}
         {!saved && <span />}
         <button
           onClick={handleSave}
           disabled={saving}
-          className="px-5 py-2.5 bg-zinc-900 text-white text-sm rounded hover:bg-zinc-700 disabled:opacity-50"
+          className="px-5 py-2.5 bg-gold text-[#0c0c0c] text-sm font-medium rounded hover:bg-gold-dim disabled:opacity-50 transition-colors"
         >
           {saving ? 'Saving...' : 'Save Style Pack'}
         </button>

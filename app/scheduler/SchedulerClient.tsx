@@ -15,15 +15,15 @@ function formatDate(iso: string | null) {
 
 function StatusBadge({ status }: { status: string }) {
   const map: Record<string, string> = {
-    draft: 'bg-zinc-100 text-zinc-600',
-    approved: 'bg-blue-50 text-blue-700',
-    scheduled: 'bg-amber-50 text-amber-700',
-    draft_saved: 'bg-purple-50 text-purple-700',
-    posted: 'bg-emerald-50 text-emerald-700',
-    failed: 'bg-red-50 text-red-700',
+    draft: 'bg-well text-ink-3',
+    approved: 'bg-blue-500/10 text-blue-400',
+    scheduled: 'bg-gold/10 text-gold',
+    draft_saved: 'bg-purple-500/10 text-purple-400',
+    posted: 'bg-emerald-500/10 text-emerald-400',
+    failed: 'bg-red-500/10 text-red-400',
   }
   return (
-    <span className={`inline-block px-2 py-0.5 rounded text-xs font-medium ${map[status] ?? 'bg-zinc-100 text-zinc-500'}`}>
+    <span className={`inline-block px-2 py-0.5 rounded text-xs font-medium ${map[status] ?? 'bg-well text-ink-3'}`}>
       {status.replace('_', ' ')}
     </span>
   )
@@ -73,34 +73,34 @@ function ScheduleModal({
   }
 
   return (
-    <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-      <div className="bg-white rounded-xl shadow-xl p-6 w-96 space-y-4">
-        <h3 className="text-sm font-semibold text-zinc-800">Schedule Post</h3>
-        <p className="text-xs text-zinc-500 line-clamp-3">{post.content}</p>
+    <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50">
+      <div className="bg-layer border border-groove rounded-xl shadow-2xl p-6 w-96 space-y-4">
+        <h3 className="text-sm font-semibold text-ink">Schedule Post</h3>
+        <p className="text-xs text-ink-2 line-clamp-3">{post.content}</p>
         <div>
-          <label className="block text-xs font-medium text-zinc-700 mb-1">Date and time</label>
+          <label className="block text-xs font-medium text-ink-2 mb-1">Date and time</label>
           <input
             type="datetime-local"
             value={dt}
             onChange={(e) => setDt(e.target.value)}
-            className="w-full text-sm border border-zinc-300 rounded p-2 text-zinc-900"
+            className="w-full text-sm bg-well border border-groove rounded p-2 text-ink focus:outline-none focus:border-gold"
           />
         </div>
-        <p className="text-xs text-zinc-400">
+        <p className="text-xs text-ink-3">
           This sets a reminder time only — posting is manual. Copy the post content and paste it on LinkedIn.
         </p>
         <div className="flex justify-between">
           <div className="flex gap-2">
             <button
               onClick={onClose}
-              className="px-3 py-1.5 text-sm border border-zinc-200 rounded hover:bg-zinc-50"
+              className="px-3 py-1.5 text-sm border border-rim hover:border-groove rounded text-ink-2 hover:text-ink transition-colors"
             >
               Cancel
             </button>
             {post.scheduled_at && (
               <button
                 onClick={handleUnschedule}
-                className="px-3 py-1.5 text-sm text-red-600 border border-red-200 rounded hover:bg-red-50"
+                className="px-3 py-1.5 text-sm text-red-400 border border-red-900 rounded hover:bg-red-500/10 transition-colors"
               >
                 Unschedule
               </button>
@@ -109,7 +109,7 @@ function ScheduleModal({
           <button
             onClick={handleSave}
             disabled={saving}
-            className="px-4 py-1.5 bg-zinc-900 text-white text-sm rounded hover:bg-zinc-700 disabled:opacity-50"
+            className="px-4 py-1.5 bg-gold text-[#0c0c0c] text-sm font-medium rounded hover:bg-gold-dim disabled:opacity-50 transition-colors"
           >
             {saving ? 'Saving...' : 'Schedule'}
           </button>
@@ -163,55 +163,55 @@ export default function SchedulerClient({ initialPosts }: { initialPosts: Post[]
 
       {/* Scheduled queue */}
       <section>
-        <h2 className="text-sm font-semibold text-zinc-700 mb-3">
+        <h2 className="text-xs font-medium text-ink-2 uppercase tracking-wider mb-3">
           Scheduled ({scheduled.length})
         </h2>
         {scheduled.length === 0 ? (
-          <div className="bg-white border border-zinc-200 rounded-lg p-5 text-sm text-zinc-400">
+          <div className="bg-layer border border-rim rounded-lg p-5 text-sm text-ink-3">
             No scheduled posts.
           </div>
         ) : (
           <div className="space-y-2">
             {scheduled.map((post) => (
-              <div key={post.id} className="bg-white border border-zinc-200 rounded-lg p-4 flex items-start gap-4">
+              <div key={post.id} className="bg-layer border border-rim rounded-lg p-4 flex items-start gap-4">
                 <div className="shrink-0 text-center min-w-[60px]">
-                  <p className="text-lg font-semibold text-zinc-800">
+                  <p className="text-lg font-semibold text-ink">
                     {post.scheduled_at ? new Date(post.scheduled_at).getDate() : ''}
                   </p>
-                  <p className="text-xs text-zinc-400">
+                  <p className="text-xs text-gold">
                     {post.scheduled_at
                       ? new Date(post.scheduled_at).toLocaleString(undefined, { month: 'short' })
                       : ''}
                   </p>
-                  <p className="text-xs text-zinc-400">
+                  <p className="text-xs text-ink-3">
                     {post.scheduled_at
                       ? new Date(post.scheduled_at).toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' })
                       : ''}
                   </p>
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm text-zinc-800 line-clamp-2">{post.content}</p>
+                  <p className="text-sm text-ink line-clamp-2">{post.content}</p>
                   <div className="flex items-center gap-2 mt-1.5">
                     <StatusBadge status={post.status} />
-                    <span className="text-xs text-zinc-400 capitalize">{post.mode ?? ''}</span>
+                    <span className="text-xs text-ink-3 capitalize">{post.mode ?? ''}</span>
                   </div>
                 </div>
                 <div className="flex flex-col gap-1.5 shrink-0">
                   <button
                     onClick={() => handleCopy(post.content)}
-                    className="text-xs text-zinc-500 hover:text-zinc-800 border border-zinc-200 rounded px-2 py-1"
+                    className="text-xs text-ink-3 hover:text-ink-2 border border-rim hover:border-groove rounded px-2 py-1 transition-colors"
                   >
                     Copy
                   </button>
                   <button
                     onClick={() => setScheduling(post)}
-                    className="text-xs text-zinc-500 hover:text-zinc-800 border border-zinc-200 rounded px-2 py-1"
+                    className="text-xs text-ink-3 hover:text-ink-2 border border-rim hover:border-groove rounded px-2 py-1 transition-colors"
                   >
                     Reschedule
                   </button>
                   <button
                     onClick={() => handleMarkPosted(post.id)}
-                    className="text-xs text-zinc-500 hover:text-zinc-800 border border-zinc-200 rounded px-2 py-1"
+                    className="text-xs text-ink-3 hover:text-ink-2 border border-rim hover:border-groove rounded px-2 py-1 transition-colors"
                   >
                     Mark Posted
                   </button>
@@ -224,34 +224,34 @@ export default function SchedulerClient({ initialPosts }: { initialPosts: Post[]
 
       {/* Ready to schedule */}
       <section>
-        <h2 className="text-sm font-semibold text-zinc-700 mb-3">
+        <h2 className="text-xs font-medium text-ink-2 uppercase tracking-wider mb-3">
           Ready to Schedule ({unscheduled.length})
         </h2>
         {unscheduled.length === 0 ? (
-          <div className="bg-white border border-zinc-200 rounded-lg p-5 text-sm text-zinc-400">
+          <div className="bg-layer border border-rim rounded-lg p-5 text-sm text-ink-3">
             No approved posts waiting.
           </div>
         ) : (
           <div className="space-y-2">
             {unscheduled.map((post) => (
-              <div key={post.id} className="bg-white border border-zinc-200 rounded-lg p-4 flex items-start gap-4">
+              <div key={post.id} className="bg-layer border border-rim rounded-lg p-4 flex items-start gap-4">
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm text-zinc-800 line-clamp-2">{post.content}</p>
+                  <p className="text-sm text-ink line-clamp-2">{post.content}</p>
                   <div className="flex items-center gap-2 mt-1.5">
                     <StatusBadge status={post.status} />
-                    <span className="text-xs text-zinc-400 capitalize">{post.mode ?? ''}</span>
+                    <span className="text-xs text-ink-3 capitalize">{post.mode ?? ''}</span>
                   </div>
                 </div>
                 <div className="flex items-center gap-2 shrink-0">
                   <button
                     onClick={() => handleCopy(post.content)}
-                    className="text-xs text-zinc-500 hover:text-zinc-800 border border-zinc-200 rounded px-2 py-1"
+                    className="text-xs text-ink-3 hover:text-ink-2 border border-rim hover:border-groove rounded px-2 py-1 transition-colors"
                   >
                     Copy
                   </button>
                   <button
                     onClick={() => setScheduling(post)}
-                    className="text-xs text-zinc-900 hover:bg-zinc-100 border border-zinc-300 rounded px-2 py-1 font-medium"
+                    className="text-xs text-gold border border-gold/30 hover:bg-gold/10 rounded px-2 py-1 font-medium transition-colors"
                   >
                     Schedule
                   </button>
@@ -265,13 +265,13 @@ export default function SchedulerClient({ initialPosts }: { initialPosts: Post[]
       {/* Recently posted */}
       {posted.length > 0 && (
         <section>
-          <h2 className="text-sm font-semibold text-zinc-700 mb-3">Recently Posted</h2>
+          <h2 className="text-xs font-medium text-ink-2 uppercase tracking-wider mb-3">Recently Posted</h2>
           <div className="space-y-2">
             {posted.map((post) => (
-              <div key={post.id} className="bg-white border border-zinc-200 rounded-lg p-4 flex items-start gap-4">
+              <div key={post.id} className="bg-layer border border-rim rounded-lg p-4 flex items-start gap-4">
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm text-zinc-800 line-clamp-2">{post.content}</p>
-                  <p className="text-xs text-zinc-400 mt-1">{formatDate(post.posted_at)}</p>
+                  <p className="text-sm text-ink line-clamp-2">{post.content}</p>
+                  <p className="text-xs text-ink-3 mt-1">{formatDate(post.posted_at)}</p>
                 </div>
                 <StatusBadge status={post.status} />
               </div>

@@ -12,9 +12,9 @@ interface Variation {
 
 function GuardrailBadge({ result }: { result: GuardrailResult }) {
   const map = {
-    pass: 'bg-emerald-50 text-emerald-700 border-emerald-200',
-    warn: 'bg-amber-50 text-amber-700 border-amber-200',
-    fail: 'bg-red-50 text-red-700 border-red-200',
+    pass: 'bg-emerald-500/10 text-emerald-400 border-emerald-900',
+    warn: 'bg-gold/10 text-gold border-gold/20',
+    fail: 'bg-red-500/10 text-red-400 border-red-900',
   }
   return (
     <div className={`border rounded px-2.5 py-1.5 text-xs ${map[result.status]}`}>
@@ -53,20 +53,20 @@ function VariationCard({
   }
 
   return (
-    <div className="bg-white border border-zinc-200 rounded-lg p-5 space-y-3">
+    <div className="bg-layer border border-rim rounded-lg p-5 space-y-3">
       <div className="flex items-center justify-between">
-        <span className="text-xs font-medium text-zinc-500">Variation {index + 1}</span>
+        <span className="text-xs font-medium text-ink-3">Variation {index + 1}</span>
         <div className="flex items-center gap-2">
           <button
             onClick={() => onTighten(content, index)}
             disabled={tightening}
-            className="text-xs text-zinc-500 hover:text-zinc-800 border border-zinc-200 rounded px-2 py-1 disabled:opacity-50"
+            className="text-xs text-ink-3 hover:text-ink-2 border border-rim hover:border-groove rounded px-2 py-1 disabled:opacity-50 transition-colors"
           >
             {tightening ? 'Tightening...' : 'Tighten'}
           </button>
           <button
             onClick={handleCopy}
-            className="text-xs text-zinc-500 hover:text-zinc-800 border border-zinc-200 rounded px-2 py-1"
+            className="text-xs text-ink-3 hover:text-ink-2 border border-rim hover:border-groove rounded px-2 py-1 transition-colors"
           >
             {copied ? 'Copied' : 'Copy'}
           </button>
@@ -77,7 +77,7 @@ function VariationCard({
         value={content}
         onChange={(e) => setContent(e.target.value)}
         rows={8}
-        className="w-full text-sm text-zinc-800 border border-zinc-200 rounded p-3 resize-y focus:outline-none focus:ring-1 focus:ring-zinc-400 font-mono"
+        className="w-full text-sm text-ink bg-well border border-groove rounded p-3 resize-y focus:outline-none focus:border-gold font-mono transition-colors"
       />
 
       <GuardrailBadge result={variation.guardrail} />
@@ -85,7 +85,7 @@ function VariationCard({
       <div className="flex justify-end gap-2">
         <button
           onClick={() => onApprove(content)}
-          className="px-4 py-2 bg-zinc-900 text-white text-sm rounded hover:bg-zinc-700 transition-colors"
+          className="px-4 py-2 bg-gold text-[#0c0c0c] text-sm font-medium rounded hover:bg-gold-dim transition-colors"
         >
           Approve &amp; Save
         </button>
@@ -197,21 +197,21 @@ export default function ComposerClient({ templates }: { templates: Template[] })
   return (
     <div className="space-y-6">
       {/* Controls */}
-      <div className="bg-white border border-zinc-200 rounded-lg p-6 space-y-4">
+      <div className="bg-layer border border-rim rounded-lg p-6 space-y-4">
         <div>
-          <label className="block text-xs font-medium text-zinc-800 mb-1.5">Topic / Prompt</label>
+          <label className="block text-xs font-medium text-ink-2 mb-1.5">Topic / Prompt</label>
           <textarea
             value={topic}
             onChange={(e) => setTopic(e.target.value)}
             rows={3}
             placeholder="What do you want to post about?"
-            className="w-full text-sm border border-zinc-200 rounded p-3 focus:outline-none focus:ring-1 focus:ring-zinc-400"
+            className="w-full text-sm text-ink bg-well border border-groove rounded p-3 focus:outline-none focus:border-gold placeholder:text-ink-3 transition-colors"
           />
         </div>
 
         <div className="grid grid-cols-3 gap-4">
           <div>
-            <label className="block text-xs font-medium text-zinc-800 mb-1.5">Mode</label>
+            <label className="block text-xs font-medium text-ink-2 mb-1.5">Mode</label>
             <SegmentedControl<PostMode>
               options={[
                 { value: 'engagement', label: 'Engagement' },
@@ -222,7 +222,7 @@ export default function ComposerClient({ templates }: { templates: Template[] })
             />
           </div>
           <div>
-            <label className="block text-xs font-medium text-zinc-800 mb-1.5">Closer</label>
+            <label className="block text-xs font-medium text-ink-2 mb-1.5">Closer</label>
             <SegmentedControl<CloserType>
               options={[
                 { value: 'question', label: 'Question' },
@@ -235,7 +235,7 @@ export default function ComposerClient({ templates }: { templates: Template[] })
             />
           </div>
           <div>
-            <label className="block text-xs font-medium text-zinc-800 mb-1.5">Variations</label>
+            <label className="block text-xs font-medium text-ink-2 mb-1.5">Variations</label>
             <SegmentedControl<string>
               options={[1, 2, 3, 4, 5].map((n) => ({ value: String(n), label: String(n) }))}
               value={String(variationCount)}
@@ -246,11 +246,11 @@ export default function ComposerClient({ templates }: { templates: Template[] })
 
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-xs font-medium text-zinc-800 mb-1.5">Template (optional)</label>
+            <label className="block text-xs font-medium text-ink-2 mb-1.5">Template (optional)</label>
             <select
               value={templateId}
               onChange={(e) => setTemplateId(e.target.value)}
-              className="w-full text-sm border border-zinc-200 rounded p-2 focus:outline-none"
+              className="w-full text-sm text-ink bg-well border border-groove rounded p-2 focus:outline-none focus:border-gold"
             >
               <option value="">No template</option>
               {filteredTemplates.map((t) => (
@@ -259,13 +259,13 @@ export default function ComposerClient({ templates }: { templates: Template[] })
             </select>
           </div>
           <div>
-            <label className="block text-xs font-medium text-zinc-800 mb-1.5">First comment (optional)</label>
+            <label className="block text-xs font-medium text-ink-2 mb-1.5">First comment (optional)</label>
             <input
               type="text"
               value={firstComment}
               onChange={(e) => setFirstComment(e.target.value)}
               placeholder="Add a first comment..."
-              className="w-full text-sm border border-zinc-200 rounded p-2 focus:outline-none"
+              className="w-full text-sm text-ink bg-well border border-groove rounded p-2 focus:outline-none focus:border-gold placeholder:text-ink-3"
             />
           </div>
         </div>
@@ -277,19 +277,19 @@ export default function ComposerClient({ templates }: { templates: Template[] })
                 type="checkbox"
                 checked={emojiNumbers}
                 onChange={(e) => setEmojiNumbers(e.target.checked)}
-                className="rounded border-zinc-300"
+                className="rounded border-groove bg-well"
               />
-              <span className="text-xs text-zinc-600">Emoji numbers <span className="text-zinc-400">(1️⃣ 2️⃣ 3️⃣)</span></span>
+              <span className="text-xs text-ink-2">Emoji numbers <span className="text-ink-3">(1️⃣ 2️⃣ 3️⃣)</span></span>
             </label>
-            {error && <p className="text-sm text-red-600">{error}</p>}
+            {error && <p className="text-sm text-red-400">{error}</p>}
             {savedId && (
-              <p className="text-sm text-emerald-600">Saved. <a href="/dashboard" className="underline">View dashboard</a></p>
+              <p className="text-sm text-emerald-400">Saved. <a href="/dashboard" className="underline">View dashboard</a></p>
             )}
           </div>
           <button
             onClick={handleGenerate}
             disabled={generating || !topic.trim()}
-            className="px-5 py-2.5 bg-zinc-900 text-white text-sm rounded-lg hover:bg-zinc-700 disabled:opacity-50 transition-colors"
+            className="px-5 py-2.5 bg-gold text-[#0c0c0c] text-sm font-medium rounded-lg hover:bg-gold-dim disabled:opacity-50 transition-colors"
           >
             {generating ? 'Generating...' : 'Generate'}
           </button>

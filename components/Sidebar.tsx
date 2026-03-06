@@ -17,11 +17,13 @@ export default function Sidebar() {
   const pathname = usePathname()
 
   return (
-    <aside className="w-52 shrink-0 bg-zinc-900 flex flex-col h-full">
-      <div className="px-5 py-6 border-b border-zinc-800">
-        <span className="text-white font-semibold text-sm tracking-wide">LinkedIn Agent</span>
+    <aside className="w-52 shrink-0 bg-layer flex flex-col h-full border-r border-rim">
+      <div className="px-5 py-6 border-b border-rim">
+        <span className="font-display text-base text-ink tracking-tight">
+          LinkedIn <span className="text-gold">Agent</span>
+        </span>
       </div>
-      <nav className="flex-1 px-3 py-4 space-y-0.5">
+      <nav className="flex-1 px-2 py-4 space-y-0.5">
         {NAV.map((item) => {
           const active = pathname === item.href || pathname.startsWith(item.href + '/')
           return (
@@ -30,8 +32,8 @@ export default function Sidebar() {
               href={item.href}
               className={`block px-3 py-2 rounded text-sm transition-colors ${
                 active
-                  ? 'bg-zinc-700 text-white font-medium'
-                  : 'text-zinc-400 hover:text-white hover:bg-zinc-800'
+                  ? 'bg-gold/10 text-gold border-l-2 border-gold pl-[10px]'
+                  : 'text-ink-3 hover:text-ink-2 hover:bg-well/60 border-l-2 border-transparent pl-[10px]'
               }`}
             >
               {item.label}
@@ -39,8 +41,8 @@ export default function Sidebar() {
           )
         })}
       </nav>
-      <div className="px-5 py-4 border-t border-zinc-800">
-        <p className="text-zinc-600 text-xs">Local only</p>
+      <div className="px-5 py-4 border-t border-rim">
+        <p className="text-ink-3 text-xs">Local only</p>
       </div>
     </aside>
   )
