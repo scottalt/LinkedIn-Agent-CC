@@ -103,8 +103,8 @@ function applyEmojiNumbers(text: string): string {
   return text.replace(/^(\d+)\. /gm, (_, n) => `${EMOJI_NUMS[n] ?? `${n}.`} `)
 }
 
-export default function ComposerClient({ templates }: { templates: Template[] }) {
-  const [topic, setTopic] = useState('')
+export default function ComposerClient({ templates, initialTopic = '' }: { templates: Template[]; initialTopic?: string }) {
+  const [topic, setTopic] = useState(initialTopic)
   const [mode, setMode] = useState<PostMode>('engagement')
   const [ctaStyle, setCtaStyle] = useState<CloserType>('question')
   const [templateId, setTemplateId] = useState('')
