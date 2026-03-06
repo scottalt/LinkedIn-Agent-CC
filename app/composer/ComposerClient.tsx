@@ -227,6 +227,7 @@ export default function ComposerClient({ templates }: { templates: Template[] })
               options={[
                 { value: 'question', label: 'Question' },
                 { value: 'soft_cta', label: 'Soft CTA' },
+                { value: 'dm_advice', label: 'DM offer' },
                 { value: 'none', label: 'None' },
               ]}
               value={ctaStyle}

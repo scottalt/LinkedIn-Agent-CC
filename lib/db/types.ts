@@ -1,7 +1,7 @@
 export type PostStatus = 'draft' | 'approved' | 'scheduled' | 'draft_saved' | 'posted' | 'failed'
 export type PostType = 'text' | 'image'
 export type PostMode = 'engagement' | 'authority'
-export type CloserType = 'question' | 'soft_cta' | 'none'
+export type CloserType = 'question' | 'soft_cta' | 'dm_advice' | 'none'
 export type HookType = 'question' | 'stat' | 'story' | 'contrarian' | 'list' | 'none'
 export type ModeAffinity = 'engagement' | 'authority' | 'both'
 

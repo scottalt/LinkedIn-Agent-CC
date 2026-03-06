@@ -79,6 +79,8 @@ export function buildUserPrompt(opts: BuildPromptOptions): string {
     prompt += `CLOSER: End with a genuine question — one you'd actually want answered, not a fake engagement prompt.\n`
   } else if (ctaStyle === 'soft_cta') {
     prompt += `CLOSER: End with a soft action — link in bio, check the GitHub, more in the comments. No hard sells.\n`
+  } else if (ctaStyle === 'dm_advice') {
+    prompt += `CLOSER: End with a brief, genuine offer to help via DM — aimed at students or early-career people. Something like "Happy to offer advice where I can" or "Feel free to reach out." Keep it understated. One sentence, no exclamation point, no emoji. Not a marketing move.\n`
   } else {
     prompt += `CLOSER: No forced closer. Let the post stand on its own.\n`
   }

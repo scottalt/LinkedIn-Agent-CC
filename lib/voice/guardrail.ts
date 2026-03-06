@@ -24,7 +24,7 @@ const AI_TELL_PATTERNS: { pattern: RegExp; label: string }[] = [
   { pattern: /honored to/i, label: 'AI tell: "honored to"' },
   { pattern: /humbled (to|by)/i, label: 'AI tell: "humbled"' },
   { pattern: /follow (me|for more)/i, label: 'Fake engagement: "follow me"' },
-  { pattern: /dm me/i, label: 'Fake engagement: "DM me"' },
+  { pattern: /\bdm me\b/i, label: 'Fake engagement: "DM me"' },
   { pattern: /like if you agree/i, label: 'Fake engagement: "like if you agree"' },
   { pattern: /repost if/i, label: 'Fake engagement: "repost if"' },
   { pattern: /comment below/i, label: 'Fake engagement: "comment below"' },
