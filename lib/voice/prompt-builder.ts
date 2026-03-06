@@ -1,5 +1,5 @@
 import { StylePack } from '@/lib/db/types'
-import { PostMode, CloserType, HookType } from '@/lib/db/types'
+import { PostMode, CloserType } from '@/lib/db/types'
 
 interface BuildPromptOptions {
   stylePack: StylePack
@@ -16,25 +16,48 @@ export function buildSystemPrompt(stylePack: StylePack): string {
   const hashtagRules: { min: number; max: number; preferred_tags: string[] } = JSON.parse(
     stylePack.hashtag_rules
   )
-  const formattingRules: Record<string, boolean> = JSON.parse(stylePack.formatting_rules)
   const voiceExamples: string[] = JSON.parse(stylePack.voice_examples)
 
-  const rules: string[] = [
-    `Write in first person. Be direct and specific. No vendor language.`,
-    `Max line length: ${stylePack.line_length_target} words. Short sentences. Active voice.`,
-    `Hashtags: ${hashtagRules.min}-${hashtagRules.max} max. ${hashtagRules.preferred_tags.length > 0 ? `Preferred: ${hashtagRules.preferred_tags.join(', ')}` : 'Use sparingly.'}`,
-    formattingRules.no_em_dash ? 'Never use em dashes (—). Use commas or periods instead.' : '',
-    `BANNED PHRASES (never use): ${bannedPhrases.join(', ')}`,
-    `Do not use AI tell phrases like "in today's landscape", "it's worth noting", "let's dive in", "at the end of the day", "it goes without saying".`,
-  ].filter(Boolean)
+  let prompt = `You are writing LinkedIn posts for Scott Altiparmak — a senior information security engineer based in Miami. CISSP, SC-200. Director of Programming at South Florida ISSA. He writes for practitioners, not for vendors.
 
-  let prompt = `You are a LinkedIn content writer for a senior information security professional.\n\n`
-  prompt += `RULES:\n${rules.map((r) => `- ${r}`).join('\n')}\n\n`
+VOICE AND TONE:
+- Direct and specific. No padding. No filler.
+- Short sentences, active voice. No em dashes (—). Use commas or periods instead.
+- Dry wit is fine. Hedging is not.
+- First person throughout.
+- Does not perform excitement. Does not signal virtue.
+- Writes like someone who has actually done the work and is tired of people who haven't.
+- Topics: identity (Entra ID/Azure AD), detection engineering, security operations, career advice for practitioners and students, building in public, community.
+
+STRUCTURAL RULES:
+- Hook in the first line. No warm-up sentences.
+- Keep most lines to ${stylePack.line_length_target} words or fewer.
+- Paragraphs are short — 1-3 sentences. Use line breaks generously.
+- Lists are numbered when there's a sequence, bulleted only when truly parallel.
+- Ends can be a statement. Forced questions are worse than no question.
+- No sign-off phrases ("That's all for today", "Thanks for reading", "Let me know what you think").
+
+HASHTAGS:
+- ${hashtagRules.max} maximum, placed at the very end if used at all.
+- ${hashtagRules.preferred_tags.length > 0 ? `Preferred: ${hashtagRules.preferred_tags.join(', ')}` : 'Only when they add context, not for reach-farming.'}
+- Many posts don't need hashtags. Don't add them just to have them.
+
+NEVER USE THESE PHRASES:
+${bannedPhrases.slice(0, 30).map((p) => `- "${p}"`).join('\n')}
+
+DO NOT:
+- Use exclamation points.
+- Use "Follow me for more" or any variant.
+- Use "DM me" or "Like if you agree".
+- Use ellipses (...) at the end of sentences to create fake tension.
+- Open with "I" as the first word — find a stronger entry point.
+- Open with a question as the hook — state something instead.
+`
 
   if (voiceExamples.length > 0) {
-    prompt += `VOICE EXAMPLES (match this tone and style):\n`
+    prompt += `\nVOICE EXAMPLES (these are real posts — match this tone exactly):\n\n`
     voiceExamples.slice(0, 3).forEach((ex, i) => {
-      prompt += `Example ${i + 1}:\n${ex}\n\n`
+      prompt += `--- Example ${i + 1} ---\n${ex}\n\n`
     })
   }
 
@@ -44,14 +67,20 @@ export function buildSystemPrompt(stylePack: StylePack): string {
 export function buildUserPrompt(opts: BuildPromptOptions): string {
   const { mode, ctaStyle, targetAudience, templateStructure, topic, variationCount = 3 } = opts
 
-  let prompt = `Write ${variationCount} LinkedIn post variations about:\n\n${topic}\n\n`
+  let prompt = `Write ${variationCount} LinkedIn post variation${variationCount > 1 ? 's' : ''} about:\n\n${topic}\n\n`
 
-  prompt += `MODE: ${mode === 'engagement' ? 'Engagement (hooks, relatable, drives comments/saves)' : 'Authority (expertise-first, demonstrates deep knowledge, no soft sells)'}\n`
+  if (mode === 'engagement') {
+    prompt += `MODE: Engagement. Hook hard in the first line. Be relatable and specific. Drive saves and comments by giving people something to think about or act on. Don't be generic.\n`
+  } else {
+    prompt += `MODE: Authority. Lead with expertise. Demonstrate that you've been inside this problem, not just read about it. No soft sells, no "what do you think" closer unless it's a genuine question you'd actually want answered.\n`
+  }
 
-  if (ctaStyle && ctaStyle !== 'none') {
-    prompt += `CLOSER: ${ctaStyle === 'question' ? 'End with a genuine question for the audience' : 'End with a soft CTA (no hard sells, no "follow me" or "DM me")'}\n`
-  } else if (ctaStyle === 'none') {
-    prompt += `CLOSER: No call to action. Let the post stand on its own.\n`
+  if (ctaStyle === 'question') {
+    prompt += `CLOSER: End with a genuine question — one you'd actually want answered, not a fake engagement prompt.\n`
+  } else if (ctaStyle === 'soft_cta') {
+    prompt += `CLOSER: End with a soft action — link in bio, check the GitHub, more in the comments. No hard sells.\n`
+  } else {
+    prompt += `CLOSER: No forced closer. Let the post stand on its own.\n`
   }
 
   if (targetAudience) {
@@ -59,13 +88,18 @@ export function buildUserPrompt(opts: BuildPromptOptions): string {
   }
 
   if (templateStructure && templateStructure.length > 0) {
-    prompt += `\nSTRUCTURE (follow this order):\n`
+    prompt += `\nFOLLOW THIS STRUCTURE (in order):\n`
     templateStructure.forEach((block, i) => {
       prompt += `${i + 1}. [${block.type.toUpperCase()}] ${block.label}\n`
     })
+    prompt += `\nDo not skip blocks. Do not add blocks not listed here.\n`
   }
 
-  prompt += `\nFormat: Separate each variation with "---VARIATION---". No preamble. Output only the posts.`
+  if (variationCount > 1) {
+    prompt += `\nSeparate each variation with exactly: ---VARIATION---\nNo preamble. No "Here are your variations:" header. Output only the posts.`
+  } else {
+    prompt += `\nOutput only the post. No preamble.`
+  }
 
   return prompt
 }

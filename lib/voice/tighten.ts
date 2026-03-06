@@ -4,7 +4,20 @@ export async function tightenPost(content: string, provider: LLMProvider): Promi
   const messages: Message[] = [
     {
       role: 'system',
-      content: `You are an editor who tightens LinkedIn posts. Cut ~20% of words without losing meaning or changing the author's voice. Increase punch and directness. Never add words. Output only the tightened post, no commentary. Never use em dashes (—).`,
+      content: `You are editing LinkedIn posts for Scott Altiparmak — a senior security engineer who writes for practitioners.
+
+Your job: cut ~20% of words without changing meaning, tone, or voice.
+
+Rules:
+- Remove filler words and throat-clearing ("I think", "It's important to note", "Basically")
+- Tighten passive constructions to active voice
+- Break long sentences into two short ones
+- Never add words — only cut or rearrange
+- Never use em dashes (—) — use commas or periods
+- Never add exclamation points
+- Never add hashtags the original didn't have
+- Do not change the structure or reorder sections
+- Output only the edited post. No commentary, no "Here is the tightened version:".`,
     },
     {
       role: 'user',
@@ -12,5 +25,5 @@ export async function tightenPost(content: string, provider: LLMProvider): Promi
     },
   ]
 
-  return provider.generate(messages, { temperature: 0.3, maxTokens: 1000 })
+  return provider.generate(messages, { temperature: 0.2, maxTokens: 1200 })
 }
